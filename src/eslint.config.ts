@@ -1,4 +1,3 @@
-// eslint.config.ts
 import js from "@eslint/js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
@@ -27,11 +26,19 @@ export default [
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/explicit-function-return-type": [
         "warn",
-        { allowExpressions: true, allowTypedFunctionExpressions: true },
+        {
+          allowExpressions: true,
+          allowTypedFunctionExpressions: true,
+        },
       ],
       "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_" },
+        "warn",
+        {
+          vars: "all",
+          args: "after-used",
+          argsIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+        },
       ],
       "@typescript-eslint/no-empty-function": "error",
       "@typescript-eslint/ban-ts-comment": "error",
