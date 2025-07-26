@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 
 export const login = (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  
   return res.status(200).json({ message: "Login successful" });
 };
 
