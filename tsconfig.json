@@ -1,13 +1,29 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
     "esModuleInterop": true,
+    "exactOptionalPropertyTypes": true,
+    // ✅ Project Consistency
     "forceConsistentCasingInFileNames": true,
     "module": "commonjs",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "outDir": "dist",
+    "resolveJsonModule": true,
     "rootDir": "src",
+    // ✅ Skipping
     "skipLibCheck": true,
-    "strict": true,
-    "target": "ES2020"
+    // ✅ Type Safety
+    "strict": true, // Enables all strict mode options
+    "target": "ES2020",
+    "useUnknownInCatchVariables": true
   },
-  "include": ["src", "src/eslint.config.ts"]
+  "exclude": ["node_modules", "dist"],
+  "include": ["src", "eslint.config.ts"]
 }
