@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const loginSchema = z
+export const registerSchema = z
   .object({
     name: z.string("Name is required").min(1, "Name is required"),
     email: z
