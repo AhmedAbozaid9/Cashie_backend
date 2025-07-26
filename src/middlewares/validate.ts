@@ -1,14 +1,27 @@
 import { NextFunction, Request, Response } from "express";
-import { flattenError, type ZodType } from "zod";
+import type { ZodType } from "zod";
 
 export const validate =
   <T>(schema: ZodType<T>) =>
   (req: Request, res: Response, next: NextFunction) => {
-    const result = schema.safeParse(req.body);
+    // Handle case where body is undefined
+    const body = req.body || {};
+
+    const result = schema.safeParse(body);
     if (!result.success) {
+      const fieldErrors: Record<string, string[]> = {};
+
+      result.error.issues.forEach((issue) => {
+        const path = issue.path.length > 0 ? issue.path.join(".") : "root";
+        if (!fieldErrors[path]) {
+          fieldErrors[path] = [];
+        }
+        fieldErrors[path].push(issue.message);
+      });
+
       return res.status(400).json({
         message: "Validation error",
-        errors: flattenError(result.error).fieldErrors,
+        errors: fieldErrors,
       });
     }
     next();
