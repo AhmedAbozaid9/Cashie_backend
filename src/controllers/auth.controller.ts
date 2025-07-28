@@ -15,7 +15,36 @@ const generateToken = (userId: number, email: string) => {
   );
 };
 
-export const login = async (req: Request, res: Response) => {};
+export const login = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+    const user = await prisma.user.findUnique({
+        where: { email },
+    });
+
+    if(!user) {
+        return res.status(401).json({
+            error: "Invalid Email or Password",
+        });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+        return res.status(401).json({
+            error: "Invalid Email or Password",
+        });
+    }
+
+    const token = generateToken(user.id, user.email)
+
+  const userWithoutPassword = Object.assign({}, user);
+  delete (userWithoutPassword as any).password;
+    return res.status(200).json({
+        message: "Login successful",
+        user: userWithoutPassword,
+        token,
+    });
+};
 
 export const register = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
