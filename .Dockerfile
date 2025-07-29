@@ -11,14 +11,14 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Generate Prisma Client (but don't run migrations yet)
+# Generate Prisma Client
 RUN npx prisma generate
 
 # Build the application
 RUN npm run build
 
-# Expose port
+# Expose port (Railway will override this)
 EXPOSE 8080
 
 # Run migrations and start the app
-CMD ["sh", "-c", "npx prisma migrate deploy && npm start"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
