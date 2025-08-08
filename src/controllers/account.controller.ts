@@ -10,13 +10,13 @@ export const getAccounts = async (
   res: Response
 ): Promise<Response> => {
   try {
-    // Access authenticated user
     const user = req.user;
-    // Example: filter accounts by user, or just log user
-    // const accounts = await prisma.account.findMany({ where: { userId: user.id } });
-    const accounts = await prisma.account.findMany();
 
-    return res.status(200).json({ user, accounts });
+    const accounts = await prisma.account.findMany({
+      where: user?.id !== undefined ? { userId: user.id } : {},
+    });
+
+    return res.status(200).json({ accounts });
   } catch (error) {
     return res.status(500).json({
       error: "Failed to retrieve accounts",
