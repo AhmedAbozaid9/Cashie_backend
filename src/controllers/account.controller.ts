@@ -24,3 +24,35 @@ export const getAccounts = async (
     });
   }
 };
+
+export const addAccount = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<Response> => {
+  try {
+    const user = req.user;
+
+    if (!user || typeof user.id !== "number") {
+      return res.status(400).json({
+        error: "User information is missing from request.",
+      });
+    }
+
+    const { name, amount } = req.body;
+
+    const newAccount = await prisma.account.create({
+      data: {
+        name,
+        amount,
+        userId: user.id,
+      },
+    });
+
+    return res.status(201).json({ account: newAccount });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Failed to add account",
+      details: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
