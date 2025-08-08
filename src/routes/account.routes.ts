@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { getAccounts } from "../controllers/account.controller";
-import { auth } from "../middlewares/auth";
+import { addAccount, getAccounts } from "../controllers/account.controller";
+import { validate } from "../middlewares/validate";
+import { accountSchema } from "../validation/accountSchema";
 
 const router = Router();
 
-router.get("/", auth, getAccounts);
+router.get("/", getAccounts);
+router.post("/", validate(accountSchema), addAccount);
 
 export default router;
