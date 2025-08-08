@@ -1,46 +1,3 @@
-export const updateAccount = async (
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<Response> => {
-  try {
-    const user = req.user;
-
-    if (!user || typeof user.id !== "number") {
-      return res
-        .status(400)
-        .json({ error: "User information is missing from request." });
-    }
-
-    const accountId = Number(req.params.id);
-
-    if (isNaN(accountId)) {
-      return res.status(400).json({ error: "Invalid account ID." });
-    }
-
-    const { name, amount } = req.body;
-
-    if (name === undefined && amount === undefined) {
-      return res.status(400).json({ error: "No fields to update." });
-    }
-
-    const updateData: Partial<{ name: string; amount: number }> = {};
-
-    if (name !== undefined) updateData.name = name;
-    if (amount !== undefined) updateData.amount = amount;
-
-    const updatedAccount = await prisma.account.update({
-      where: { id: accountId, userId: user.id },
-      data: updateData,
-    });
-
-    return res.status(200).json({ account: updatedAccount });
-  } catch (error) {
-    return res.status(500).json({
-      error: "Failed to update account",
-      details: error instanceof Error ? error.message : String(error),
-    });
-  }
-};
 import type { Response } from "express";
 import type { AuthenticatedRequest } from "../middlewares/auth";
 
@@ -95,6 +52,41 @@ export const addAccount = async (
   } catch (error) {
     return res.status(500).json({
       error: "Failed to add account",
+      details: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+export const updateAccount = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<Response> => {
+  try {
+    const user = req.user;
+
+    if (!user || typeof user.id !== "number") {
+      return res
+        .status(400)
+        .json({ error: "User information is missing from request." });
+    }
+
+    const accountId = Number(req.params.id);
+
+    const { name, amount } = req.body;
+    const updateData: Partial<{ name: string; amount: number }> = {
+      name,
+      amount,
+    };
+
+    const updatedAccount = await prisma.account.update({
+      where: { id: accountId, userId: user.id },
+      data: updateData,
+    });
+
+    return res.status(200).json({ account: updatedAccount });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Failed to update account",
       details: error instanceof Error ? error.message : String(error),
     });
   }
