@@ -65,17 +65,22 @@ export const register = async (
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
+  // Create user and account together using nested writes
   const user = await prisma.user.create({
     data: {
       name,
       email,
       password: hashedPassword,
+      accounts: {
+        create: [{ name: "Main", amount: 0 }],
+      },
     },
     select: {
       id: true,
       name: true,
       email: true,
       plan: true,
+      accounts: true,
       createdAt: true,
       updatedAt: true,
     },
