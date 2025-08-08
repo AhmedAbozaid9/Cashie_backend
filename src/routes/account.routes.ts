@@ -1,11 +1,19 @@
 import { Router } from "express";
-import { addAccount, getAccounts } from "../controllers/account.controller";
+import {
+  addAccount,
+  getAccounts,
+  updateAccount,
+} from "../controllers/account.controller";
 import { validate } from "../middlewares/validate";
-import { accountSchema } from "../validation/accountSchema";
+import {
+  accountSchema,
+  accountUpdateSchema,
+} from "../validation/accountSchema";
 
 const router = Router();
 
 router.get("/", getAccounts);
 router.post("/", validate(accountSchema), addAccount);
+router.patch("/:id", validate(accountUpdateSchema), updateAccount);
 
 export default router;
