@@ -1,4 +1,6 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction } from "express";
+import type { Request } from "express";
+import type { Response } from "express";
 import type { ZodType } from "zod";
 
 export const validate =
@@ -8,22 +10,27 @@ export const validate =
     const body = req.body || {};
 
     const result = schema.safeParse(body);
+
     if (!result.success) {
       const fieldErrors: Record<string, string[]> = {};
 
       result.error.issues.forEach((issue) => {
         const path = issue.path.length > 0 ? issue.path.join(".") : "root";
+
         if (!fieldErrors[path]) {
           fieldErrors[path] = [];
         }
+
         fieldErrors[path].push(issue.message);
       });
 
-      return res.status(400).json({
+      res.status(400).json({
         message: "Validation error",
         errors: fieldErrors,
       });
+
+      return;
     }
+
     next();
-    return;
   };
