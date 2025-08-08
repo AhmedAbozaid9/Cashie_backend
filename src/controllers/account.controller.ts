@@ -91,3 +91,29 @@ export const updateAccount = async (
     });
   }
 };
+
+export const deleteAccount = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<Response> => {
+  const user = req.user;
+  const accountId = Number(req.params.id);
+
+  if (!user || typeof user.id !== "number") {
+    return res.status(400).json({
+      error: "User information is missing from request.",
+    });
+  }
+  try {
+    await prisma.account.delete({
+      where: { id: accountId, userId: user.id },
+    });
+
+    return res.status(202).json({ message: "Account deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Failed to delete account",
+      details: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
