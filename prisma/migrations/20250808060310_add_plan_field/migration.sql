@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `users` ADD COLUMN `plan` ENUM('BASE', 'PREMIUM') NOT NULL DEFAULT 'BASE';

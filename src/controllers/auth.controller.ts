@@ -1,11 +1,11 @@
 import bcrypt from "bcrypt";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import {PrismaClient} from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const generateToken = (userId: number, email: string) => {
+const generateToken = (userId: number, email: string): string => {
   return jwt.sign(
     {
       userId,
@@ -15,38 +15,43 @@ const generateToken = (userId: number, email: string) => {
   );
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response): Promise<Response> => {
   const { email, password } = req.body;
-    const user = await prisma.user.findUnique({
-        where: { email },
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    return res.status(401).json({
+      error: "Invalid Email or Password",
     });
+  }
 
-    if(!user) {
-        return res.status(401).json({
-            error: "Invalid Email or Password",
-        });
-    }
+  const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    return res.status(401).json({
+      error: "Invalid Email or Password",
+    });
+  }
 
-    if (!isPasswordValid) {
-        return res.status(401).json({
-            error: "Invalid Email or Password",
-        });
-    }
-
-    const token = generateToken(user.id, user.email)
+  const token = generateToken(user.id, user.email);
 
   const userWithoutPassword = Object.assign({}, user);
-  delete (userWithoutPassword as any).password;
-    return res.status(200).json({
-        message: "Login successful",
-        user: userWithoutPassword,
-        token,
-    });
+
+  delete (userWithoutPassword as { password?: string }).password;
+
+  return res.status(200).json({
+    message: "Login successful",
+    user: userWithoutPassword,
+    token,
+  });
 };
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   const { name, email, password } = req.body;
 
   const existingUser = await prisma.user.findUnique({
@@ -70,6 +75,7 @@ export const register = async (req: Request, res: Response) => {
       id: true,
       name: true,
       email: true,
+      plan: true,
       createdAt: true,
       updatedAt: true,
     },

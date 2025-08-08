@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,9 +14,15 @@ model User {
   password  String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  plan      UserPlan  @default(BASE)
   accounts  Account[]
 
   @@map("users")
+}
+
+enum UserPlan {
+  BASE
+  PREMIUM
 }
 
 model Account {
@@ -30,12 +30,12 @@ model Account {
   userId       Int
   name         String
   amount       Float
-  Transactions Transaction[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+  user         User          @relation(fields: [userId], references: [id])
+  Transactions Transaction[]
 
-  user User @relation(fields: [userId], references: [id])
-
+  @@index([userId], map: "accounts_userId_fkey")
   @@map("accounts")
 }
 
@@ -44,13 +44,13 @@ model Transaction {
   accountId   Int
   title       String
   amount      Float
-  type        TransactionType // e.g., "income", "expense"
+  type        TransactionType
   description String?
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
+  account     Account         @relation(fields: [accountId], references: [id])
 
-  account Account @relation(fields: [accountId], references: [id])
-
+  @@index([accountId], map: "transactions_accountId_fkey")
   @@map("transactions")
 }
 
