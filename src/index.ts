@@ -22,3 +22,5 @@ app
   .on("error", (err) => {
     console.error("Error starting server:", err);
   });
+
+export default app;
