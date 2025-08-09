@@ -17,6 +17,7 @@ applyTo: "**"
 - Tech stack: express, typescript, prisma
 - Architecture patterns: modular express middleware
 - Key requirements: code modularity, lint compliance
+- Main entry file moved to: src/api/index.ts (from root)
 
 ## Coding Patterns
 
@@ -33,7 +34,10 @@ applyTo: "**"
 
 - Refactored headers middleware from index.ts to middlewares/headers.ts
 - Fixed lint errors (import type, missing return type, console.log)
+- Main entry file location changed to src/api/index.ts; need to update all references and scripts to reflect new location
 
 ## Notes
 
 - Middleware extraction pattern established for future refactors
+- Ensure all build/dev/start scripts use new entry file
+- Check for any hardcoded references in codebase
