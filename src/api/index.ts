@@ -9,8 +9,9 @@ const PORT = parseInt(process.env.PORT || "8080");
 
 app.use(express.json());
 app.use(headersMiddleware);
-app.use("/api/auth", authRoutes);
-app.use("/api/accounts", auth, accountRoutes);
+// Support both prefixed and non-prefixed API paths in serverless
+app.use(["/api/auth", "/auth"], authRoutes);
+app.use(["/api/accounts", "/accounts"], auth, accountRoutes);
 
 // Add a root route for testing
 app.get("/", (req, res) => {
