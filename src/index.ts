@@ -15,12 +15,14 @@ app.use(headersMiddleware);
 app.use("/api/auth", authRoutes);
 app.use("/api/accounts", auth, accountRoutes);
 
-app
-  .listen(PORT, "0.0.0.0", () => {
-    console.warn(`Server is running on port ${PORT}`);
-  })
-  .on("error", (err) => {
-    console.error("Error starting server:", err);
-  });
+if (process.env.ENV !== "production") {
+  app
+    .listen(PORT, "0.0.0.0", () => {
+      console.warn(`Server is running on port ${PORT}`);
+    })
+    .on("error", (err) => {
+      console.error("Error starting server:", err);
+    });
+}
 
 export default app;
