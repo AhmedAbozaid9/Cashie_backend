@@ -1,8 +1,8 @@
 import express from "express";
-import authRoutes from "../routes/auth.routes";
-import accountRoutes from "../routes/account.routes";
-import { auth } from "../middlewares/auth";
-import { headersMiddleware } from "../middlewares/headers";
+import authRoutes from "./routes/auth.routes";
+import accountRoutes from "./routes/account.routes";
+import { auth } from "./middlewares/auth";
+import { headersMiddleware } from "./middlewares/headers";
 
 const app = express();
 const PORT = parseInt(process.env.PORT || "8080");

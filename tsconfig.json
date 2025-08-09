@@ -23,5 +23,5 @@
     "useUnknownInCatchVariables": true
   },
   "exclude": ["node_modules", "dist"],
-  "include": ["src/api/index.ts", "src", "eslint.config.ts"]
+  "include": ["src/index.ts", "src", "eslint.config.ts"]
 }

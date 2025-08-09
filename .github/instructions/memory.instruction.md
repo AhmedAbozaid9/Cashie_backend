@@ -17,7 +17,7 @@ applyTo: "**"
 - Tech stack: express, typescript, prisma
 - Architecture patterns: modular express middleware
 - Key requirements: code modularity, lint compliance
-- Main entry file moved to: src/api/index.ts (from root)
+-- Main entry file moved to: src/index.ts (from api/index.ts)
 - Deployment target: Vercel Functions (Node.js runtime)
 
 ## Coding Patterns
@@ -36,7 +36,7 @@ applyTo: "**"
 
 - Refactored headers middleware from index.ts to middlewares/headers.ts
 - Fixed lint errors (import type, missing return type, console.log)
-- Main entry file location changed to src/api/index.ts; need to update all references and scripts to reflect new location
+- Main entry file location changed to src/index.ts; all config references updated, old api/index.ts removed, lint errors fixed
 - Added Vercel deployment wiring: api/index.ts serverless entry; vercel.json rewrites; package.json postinstall + vercel-build
 
 ## Notes
