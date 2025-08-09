@@ -31,7 +31,9 @@
   "scripts": {
     "build": "prisma generate && tsc",
     "dev": "prisma generate && nodemon src/api/index.ts",
-    "start": "node dist/api/index.js"
+    "start": "node dist/api/index.js",
+    "postinstall": "prisma generate",
+    "vercel-build": "tsc"
   },
   "type": "commonjs",
   "version": "1.0.0"

@@ -18,6 +18,7 @@ applyTo: "**"
 - Architecture patterns: modular express middleware
 - Key requirements: code modularity, lint compliance
 - Main entry file moved to: src/api/index.ts (from root)
+- Deployment target: Vercel Functions (Node.js runtime)
 
 ## Coding Patterns
 
@@ -28,16 +29,19 @@ applyTo: "**"
 
 ## Context7 Research History
 
-- No Context7 research required for this refactor
+- 2025-08-09: Vercel Node Functions + Express guide reviewed; use api handler exporting Express app; prefer vercel.json rewrites to route all paths to function; TypeScript in /api is compiled, other TS built via vercel-build.
+- Sources: Vercel Docs Node.js Runtime, Using Express with Vercel (2025-07/04 updates)
 
 ## Conversation History
 
 - Refactored headers middleware from index.ts to middlewares/headers.ts
 - Fixed lint errors (import type, missing return type, console.log)
 - Main entry file location changed to src/api/index.ts; need to update all references and scripts to reflect new location
+- Added Vercel deployment wiring: api/index.ts serverless entry; vercel.json rewrites; package.json postinstall + vercel-build
 
 ## Notes
 
 - Middleware extraction pattern established for future refactors
 - Ensure all build/dev/start scripts use new entry file
 - Check for any hardcoded references in codebase
+- For Vercel: requests are rewritten to /api/index so original URL is preserved for Express routing
