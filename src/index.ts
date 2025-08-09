@@ -1,4 +1,5 @@
 import express from "express";
+import { notFound } from "./middlewares/notFound";
 import authRoutes from "./routes/auth.routes";
 import accountRoutes from "./routes/account.routes";
 import { auth } from "./middlewares/auth";
@@ -33,4 +34,6 @@ if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
     });
 }
 
+// 404 middleware for unknown routes
+app.use(notFound);
 export default app;

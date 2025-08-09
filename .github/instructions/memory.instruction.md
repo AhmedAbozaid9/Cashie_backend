@@ -17,7 +17,7 @@ applyTo: "**"
 - Tech stack: express, typescript, prisma
 - Architecture patterns: modular express middleware
 - Key requirements: code modularity, lint compliance
--- Main entry file moved to: src/index.ts (from api/index.ts)
+  -- Main entry file moved to: src/index.ts (from api/index.ts)
 - Deployment target: Vercel Functions (Node.js runtime)
 
 ## Coding Patterns
@@ -45,3 +45,6 @@ applyTo: "**"
 - Ensure all build/dev/start scripts use new entry file
 - Check for any hardcoded references in codebase
 - For Vercel: requests are rewritten to /api/index so original URL is preserved for Express routing
+
+## Current Task (2025-08-09)
+Feature Implementation: Add 404 middleware to Express app in src/index.ts for proper handling of unknown routes.
