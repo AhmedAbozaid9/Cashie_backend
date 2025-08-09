@@ -2,7 +2,7 @@
 // Try to use compiled JS in Vercel build, fall back to TS source locally
 let app: any;
 try {
-  // When built on Vercel (vercel-build runs `tsc`), use compiled output
+  // When built on Vercel (build step runs `tsc`), use compiled output
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   app = require("../dist/index.js").default;
 } catch {
@@ -10,4 +10,6 @@ try {
   app = require("../src/index").default;
 }
 
-export default app as any;
+export default function handler(req: any, res: any) {
+  return app(req, res);
+}

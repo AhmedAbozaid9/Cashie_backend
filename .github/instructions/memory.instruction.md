@@ -47,4 +47,5 @@ applyTo: "**"
 - For Vercel: requests are rewritten to /api/index so original URL is preserved for Express routing
 
 ## Current Task (2025-08-09)
+
 Feature Implementation: Add 404 middleware to Express app in src/index.ts for proper handling of unknown routes.
