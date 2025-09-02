@@ -1,6 +1,4 @@
-import type { NextFunction } from "express";
-import type { Request } from "express";
-import type { Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import type { ZodType } from "zod";
 
 export const validate =

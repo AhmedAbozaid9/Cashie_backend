@@ -35,7 +35,7 @@
     "start": "node dist/index.js",
     "postinstall": "prisma generate",
     "vercel-build": "tsc",
-    "db:deploy:dev": "dotenv -e .env.local -- npx prisma migrate deploy",
+    "db:deploy:dev": "dotenv -e .env -- npx prisma migrate deploy",
     "db:deploy:prod": "dotenv -e .env.production -- npx prisma migrate deploy"
   },
   "type": "commonjs",
