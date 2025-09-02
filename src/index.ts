@@ -2,6 +2,7 @@ import express from "express";
 import { notFound } from "./middlewares/notFound";
 import authRoutes from "./routes/auth.routes";
 import accountRoutes from "./routes/account.routes";
+import categoryRoutes from "./routes/categories.routes";
 import { auth } from "./middlewares/auth";
 import { headersMiddleware } from "./middlewares/headers";
 
@@ -10,9 +11,10 @@ const PORT = parseInt(process.env.PORT || "8080");
 
 app.use(express.json());
 app.use(headersMiddleware);
-// Support both prefixed and non-prefixed API paths in serverless
-app.use(["/api/auth", "/auth"], authRoutes);
-app.use(["/api/accounts", "/accounts"], auth, accountRoutes);
+
+app.use(["/api/auth"], authRoutes);
+app.use(["/api/accounts"], auth, accountRoutes);
+app.use(["/api/categories"], auth, categoryRoutes);
 
 // Add a root route for testing
 app.get("/", (req, res) => {
